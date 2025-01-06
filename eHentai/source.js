@@ -501,7 +501,7 @@ class eHentai extends paperback_extensions_common_1.Source {
                 mangaId: mangaId,
                 chapNum: 1,
                 langCode: (0, eHentaiParser_1.parseLanguage)(data.tags),
-                name: (0, eHentaiParser_1.parseTitle)(data.title),
+                name: "Hello",
                 time: new Date(parseInt(data.posted) * 1000)
             })];
     }
