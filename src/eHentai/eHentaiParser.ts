@@ -75,11 +75,7 @@ async function parsePage(id: string, page: number, requestManager: RequestManage
     const pageDivArr = $('a','#gdt').toArray()
 
     for (const page of pageDivArr) {
-        const img = getImage($(page).attr('href') ?? '', requestManager, cheerio)
-            if (img != ''){
-                throw new Error(img)
-                pageArr.push(img)
-            }
+        pageArr(getImage($(page).attr('href') ?? '', requestManager, cheerio))
     }
 
     return Promise.all(pageArr)
