@@ -1,6 +1,6 @@
 {
   "name": "extensions-main",
-  "repositoryName": "Loik Extensions",
+  "repositoryName": "Extensions",
   "version": "1.0.0",
   "description": "The default source for Paperback, MangaDex",
   "main": "index.js",
