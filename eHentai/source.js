@@ -746,11 +746,7 @@ async function parsePage(id, page, requestManager, cheerio) {
     const pageArr = [];
     const pageDivArr = $('a', '#gdt').toArray();
     for (const page of pageDivArr) {
-        const img = getImage($(page).attr('href') ?? '', requestManager, cheerio);
-        if (img != '') {
-            throw new Error(img);
-            pageArr.push(img);
-        }
+        pageArr(getImage($(page).attr('href') ?? '', requestManager, cheerio));
     }
     return Promise.all(pageArr);
 }
