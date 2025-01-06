@@ -482,7 +482,7 @@ class eHentai extends paperback_extensions_common_1.Source {
         const data = (await (0, eHentaiHelper_1.getGalleryData)([mangaId], this.requestManager))[0];
         return createManga({
             id: mangaId,
-            titles: ["hello"],
+            titles: [(0, eHentaiParser_1.parseTitle)(data.title), (0, eHentaiParser_1.parseTitle)(data.title_jpn)],
             image: data.thumb,
             rating: data.rating,
             status: paperback_extensions_common_1.MangaStatus.COMPLETED,
@@ -501,7 +501,7 @@ class eHentai extends paperback_extensions_common_1.Source {
                 mangaId: mangaId,
                 chapNum: 1,
                 langCode: (0, eHentaiParser_1.parseLanguage)(data.tags),
-                name: "Hello",
+                name: (0, eHentaiParser_1.parseTitle)(data.title),
                 time: new Date(parseInt(data.posted) * 1000)
             })];
     }
@@ -744,7 +744,7 @@ async function parsePage(id, page, requestManager, cheerio) {
     const data = await requestManager.schedule(request, 1);
     const $ = cheerio.load(data.data);
     const pageArr = [];
-    const pageDivArr = $('div.gdtm').toArray();
+    const pageDivArr = $('div.gdt').toArray();
     for (const page of pageDivArr) {
         pageArr.push(getImage($('a', page).attr('href') ?? '', requestManager, cheerio));
     }
