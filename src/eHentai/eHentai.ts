@@ -176,7 +176,7 @@ export class eHentai extends Source {
             mangaId: mangaId,
             chapNum: 1,
             langCode: parseLanguage(data.tags),
-            name: parseTitle(data.title),
+            name: "Hello",//parseTitle(data.title),
             time: new Date(parseInt(data.posted) * 1000)
         })]
     }
