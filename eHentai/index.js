@@ -752,7 +752,7 @@ async function parsePage(id, page, requestManager, cheerio) {
 }
 async function parsePages(id, pageCount, requestManager, cheerio) {
     const pageArr = [];
-    for (let i = 0; i <= pageCount / 40; i++) {
+    for (let i = 0; i <= pageCount / 20; i++) {
         pageArr.push(parsePage(id, i, requestManager, cheerio));
     }
     return Promise.all(pageArr).then(pages => pages.reduce((prev, cur) => [...prev, ...cur], []));
