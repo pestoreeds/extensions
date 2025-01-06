@@ -482,7 +482,8 @@ class eHentai extends paperback_extensions_common_1.Source {
         const data = (await (0, eHentaiHelper_1.getGalleryData)([mangaId], this.requestManager))[0];
         return createManga({
             id: mangaId,
-            titles: [(0, eHentaiParser_1.parseTitle)(data.title), (0, eHentaiParser_1.parseTitle)(data.title_jpn)],
+            titles: ["hello"] //[parseTitle(data.title), parseTitle(data.title_jpn)],
+            ,
             image: data.thumb,
             rating: data.rating,
             status: paperback_extensions_common_1.MangaStatus.COMPLETED,
