@@ -755,6 +755,7 @@ async function parsePages(id, pageCount, requestManager, cheerio) {
     for (let i = 0; i <= pageCount / 20; i++) {
         pageArr.push(parsePage(id, i, requestManager, cheerio));
     }
+    throw new Error(pageArr.length);
     return Promise.all(pageArr).then(pages => pages.reduce((prev, cur) => [...prev, ...cur], []));
 }
 exports.parsePages = parsePages;
