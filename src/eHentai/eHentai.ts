@@ -155,7 +155,7 @@ export class eHentai extends Source {
 
         return createManga({
             id: mangaId,
-            titles: [parseTitle(data.title), parseTitle(data.title_jpn)],
+            titles: ["hello"]//[parseTitle(data.title), parseTitle(data.title_jpn)],
             image: data.thumb,
             rating: data.rating,
             status: MangaStatus.COMPLETED,
