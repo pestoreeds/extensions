@@ -591,6 +591,9 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : [];
     const results = [];
     const next = $('#unext').attr('href') ?? '';
+    if (typeof (next) == 'undefined') {
+        throw new Error('undefined');
+    }
     for (const entry of json) {
         results.push(createMangaTile({
             id: next,
