@@ -50,8 +50,6 @@ export async function getSearchData(query: string | undefined, page: string, cat
 
     const next = $('#unext').attr('href') ?? ''
 
-    throw new Error(data)
-
     for (const entry of json) {
         results.push(createMangaTile({
             id: next,
