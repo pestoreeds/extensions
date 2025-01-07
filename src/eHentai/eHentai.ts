@@ -105,7 +105,7 @@ export class eHentai extends Source {
                 view_more: true,
             })
             sectionCallback(section)
-            getSearchData('', '', 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(manga => {
+            getSearchData('', '', 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(l => l[0]).then(manga => {
                 section.items = manga
                 sectionCallback(section)
             })
@@ -123,15 +123,14 @@ export class eHentai extends Source {
         })
 
         const results = await getSearchData('', page, 1023 - parseInt(homepageSectionId.substring(9)), this.requestManager, this.cheerio, this.stateManager)
-        const next = results[results.length - 1].id ?? ''
+        const next = results[1]
         if (next == '') {
             throw new Error(`viewmore ${stopSearch}`)
             stopSearch = true
         }
-        results.pop()
 
         return createPagedResults({
-            results: results,
+            results: results[0],
             metadata: {
                 page: next,
 		stopSearch: stopSearch
@@ -217,18 +216,15 @@ export class eHentai extends Source {
 
         const results = await getSearchData(query.title, page, categories, this.requestManager, this.cheerio, this.stateManager)
 
-        throw new Error(results.map(x => (x as MangaTile).id))
-        const next = results[results.length - 1].id 
+        const next = results[1]
         if (next == '') {
             throw new Error(`searchresults ${results.length}`)
             stopSearch = true
         }
     
 
-        results.pop()
-
         return createPagedResults({
-            results: results,
+            results: results[0],
             metadata: {
                 page: next,
                 stopSearch: stopSearch

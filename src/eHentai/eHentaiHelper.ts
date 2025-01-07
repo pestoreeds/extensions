@@ -25,7 +25,7 @@ export async function getGalleryData(ids: string[], requestManager: RequestManag
     return json.gmetadata
 }
 
-export async function getSearchData(query: string | undefined, page: string, categories: number, requestManager: RequestManager, cheerio: CheerioAPI, stateManager: SourceStateManager): Promise<MangaTile[]> {
+export async function getSearchData(query: string | undefined, page: string, categories: number, requestManager: RequestManager, cheerio: CheerioAPI, stateManager: SourceStateManager): Promise<[MangaTile[],string]> {
    
     if (query != undefined && query.length != 0 && query.split(' ').filter(q => !q.startsWith('-')).length != 0 && await stateManager.retrieve('extraSearchArgs')) 
         query += ` ${await stateManager.retrieve('extraSearchArgs')}`
@@ -59,11 +59,13 @@ export async function getSearchData(query: string | undefined, page: string, cat
         }))
     }
 
+    /*
     results.push(createMangaTile({
         id: next,
         title: createIconText({ text: '' }),
         image: ''
     }))
+   */
 
-    return results
+    return [results, next]
 }
