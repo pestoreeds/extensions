@@ -597,8 +597,7 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     }
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : [];
     const results = [];
-    const next = $('#unext').attr('href');
-    throw new Error(`${next} ${url}`);
+    const next = $('#unext').attr('href') ?? '';
     for (const entry of json) {
         results.push(createMangaTile({
             id: `${entry.gid}/${entry.token}`,
@@ -611,6 +610,7 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
         title: createIconText({ text: '' }),
         image: ''
     }));
+    throw new Error(results[results.length - 1].id);
     return results;
 }
 exports.getSearchData = getSearchData;
