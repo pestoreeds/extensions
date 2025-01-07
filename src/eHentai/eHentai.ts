@@ -155,16 +155,16 @@ export class eHentai extends Source {
 
         return createManga({
             id: mangaId,
-            titles: [parseTitle(data.title), parseTitle(data.title_jpn)],
+            titles: [parseTitle(data.title ?? ''), parseTitle(data.title_jpn ?? '')],
             image: data.thumb,
             rating: data.rating,
             status: MangaStatus.COMPLETED,
-            langFlag: parseLanguage(data.tags),
-            artist: parseArtist(data.tags),
+            langFlag: parseLanguage(data.tags ?? ''),
+            artist: parseArtist(data.tags ?? ''),
             tags: parseTags([data.category, ...data.tags]),
             hentai: !(data.category == 'Non-H' || data.tags.includes('other:non-nude')),
             // relatedIds: [], // possibly parent_gid and/or first_gid
-            lastUpdate: new Date(parseInt(data.posted) * 1000)
+            lastUpdate: new Date(parseInt(data.posted ?? '') * 1000)
         })
     }
 
