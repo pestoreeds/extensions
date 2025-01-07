@@ -482,16 +482,16 @@ class eHentai extends paperback_extensions_common_1.Source {
         const data = (await (0, eHentaiHelper_1.getGalleryData)([mangaId], this.requestManager))[0];
         return createManga({
             id: mangaId,
-            titles: [(0, eHentaiParser_1.parseTitle)(data.title ?? ''), (0, eHentaiParser_1.parseTitle)(data.title_jpn ?? '')],
+            titles: [(0, eHentaiParser_1.parseTitle)(data.title), (0, eHentaiParser_1.parseTitle)(data.title_jpn)],
             image: data.thumb,
             rating: data.rating,
             status: paperback_extensions_common_1.MangaStatus.COMPLETED,
-            langFlag: (0, eHentaiParser_1.parseLanguage)(data.tags ?? ''),
-            artist: (0, eHentaiParser_1.parseArtist)(data.tags ?? ''),
+            langFlag: (0, eHentaiParser_1.parseLanguage)(data.tags),
+            artist: (0, eHentaiParser_1.parseArtist)(data.tags),
             tags: (0, eHentaiParser_1.parseTags)([data.category, ...data.tags]),
             hentai: !(data.category == 'Non-H' || data.tags.includes('other:non-nude')),
             // relatedIds: [], // possibly parent_gid and/or first_gid
-            lastUpdate: new Date(parseInt(data.posted ?? '') * 1000)
+            lastUpdate: new Date(parseInt(data.posted) * 1000)
         });
     }
     async getChapters(mangaId) {
@@ -591,6 +591,7 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : [];
     const results = [];
     const next = $('a', '#unext').attr('href') ?? '';
+    throw new Error(next);
     for (const entry of json) {
         results.push(createMangaTile({
             id: next,
