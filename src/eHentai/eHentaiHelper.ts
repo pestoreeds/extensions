@@ -30,8 +30,10 @@ export async function getSearchData(query: string | undefined, page: string, cat
     if (query != undefined && query.length != 0 && query.split(' ').filter(q => !q.startsWith('-')).length != 0 && await stateManager.retrieve('extraSearchArgs')) 
         query += ` ${await stateManager.retrieve('extraSearchArgs')}`
     
+    const url = (page ==  '') ? (`https://e-hentai.org/?f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`) : page
+    throw new Error(url)
     const request = createRequestObject({
-        url: (page ==  '') ? (`https://e-hentai.org/?f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`) : page,
+        url: url
         method: 'GET'
     })
 
