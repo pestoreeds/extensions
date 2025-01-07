@@ -611,7 +611,7 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
         title: createIconText({ text: '' }),
         image: ''
     }));
-    return Promise.all(results);
+    return results;
 }
 exports.getSearchData = getSearchData;
 
