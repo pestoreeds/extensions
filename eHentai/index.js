@@ -497,9 +497,9 @@ class eHentai extends paperback_extensions_common_1.Source {
     async getChapters(mangaId) {
         const data = (await (0, eHentaiHelper_1.getGalleryData)([mangaId], this.requestManager))[0];
         const chapters = [];
-        for (let i = 0; i <= data.filecount; i++) {
+        for (let i = 0; i <= parseInt(data.filecount) / 20; i++) {
             chapters.push(createChapter({
-                id: i,
+                id: i.toString(),
                 mangaId: mangaId,
                 chapNum: i + 1,
                 langCode: (0, eHentaiParser_1.parseLanguage)(data.tags),
@@ -507,7 +507,7 @@ class eHentai extends paperback_extensions_common_1.Source {
                 time: new Date(parseInt(data.posted) * 1000)
             }));
         }
-        return chapters;
+        return Promise.all(chapters);
     }
     async getChapterDetails(mangaId, chapterId) {
         return createChapterDetails({
