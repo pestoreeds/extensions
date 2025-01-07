@@ -31,7 +31,6 @@ export async function getSearchData(query: string | undefined, page: string, cat
         query += ` ${await stateManager.retrieve('extraSearchArgs')}`
     
     const url = (page ==  '') ? (`https://e-hentai.org/?f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`) : page
-    throw new Error(url)
     const request = createRequestObject({
         url: url
         method: 'GET'
@@ -50,7 +49,8 @@ export async function getSearchData(query: string | undefined, page: string, cat
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : []
     const results = []
 
-    const next = $('#unext').attr('href') ?? ''
+    const next = $('#unext').attr('href') 
+    throw new Error(`${next} ${url}`)
 
     for (const entry of json) {
         results.push(createMangaTile({
