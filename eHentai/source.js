@@ -496,21 +496,25 @@ class eHentai extends paperback_extensions_common_1.Source {
     }
     async getChapters(mangaId) {
         const data = (await (0, eHentaiHelper_1.getGalleryData)([mangaId], this.requestManager))[0];
-        return [createChapter({
-                id: data.filecount,
+        const chapters = [];
+        for (let i = 0; i <= data.filecount; i++) {
+            chapters.push(createChapter({
+                id: i,
                 mangaId: mangaId,
-                chapNum: 1,
+                chapNum: i + 1,
                 langCode: (0, eHentaiParser_1.parseLanguage)(data.tags),
                 name: (0, eHentaiParser_1.parseTitle)(data.title),
                 time: new Date(parseInt(data.posted) * 1000)
-            })];
+            }));
+        }
+        return chapters;
     }
     async getChapterDetails(mangaId, chapterId) {
         return createChapterDetails({
             id: chapterId,
             mangaId: mangaId,
             longStrip: false,
-            pages: await (0, eHentaiParser_1.parsePages)(mangaId, parseInt(chapterId), this.requestManager, this.cheerio)
+            pages: await parsePage(mangaId, parseInt(chapterId), this.requestManager, this.cheerio)
         });
     }
     async getSearchResults(query, metadata) {
