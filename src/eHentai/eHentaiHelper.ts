@@ -49,8 +49,7 @@ export async function getSearchData(query: string | undefined, page: string, cat
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : []
     const results = []
 
-    const next = $('#unext').attr('href') 
-    throw new Error(`${next} ${url}`)
+    const next = $('#unext').attr('href') ?? ''
 
     for (const entry of json) {
         results.push(createMangaTile({
@@ -65,6 +64,7 @@ export async function getSearchData(query: string | undefined, page: string, cat
         title: createIconText({ text: '' }),
         image: ''
     }))
+    throw new Error(results[results.length - 1].id)
 
     return results
 }
