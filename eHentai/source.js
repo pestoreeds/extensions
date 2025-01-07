@@ -537,14 +537,15 @@ class eHentai extends paperback_extensions_common_1.Source {
         else if (excludedCategories != undefined && excludedCategories.length != 0)
             categories = excludedCategories.map(tag => parseInt(tag.id.substring(9))).reduce((prev, cur) => prev + cur, 0);
         const results = await (0, eHentaiHelper_1.getSearchData)(query.title, page, categories, this.requestManager, this.cheerio, this.stateManager);
-        if (results[results.length - 1]?.id == 'stopSearch') {
-            results.pop();
+        const next = results[results.length - 1].id ?? '';
+        if (next == '') {
             stopSearch = true;
         }
+        results.pop();
         return createPagedResults({
             results: results,
             metadata: {
-                page: page,
+                page: next,
                 stopSearch: stopSearch
             }
         });
@@ -593,22 +594,18 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : [];
     const results = [];
     const next = $('#unext').attr('href') ?? '';
-    if (typeof (next) == 'undefined') {
-        throw new Error('undefined');
-    }
     for (const entry of json) {
         results.push(createMangaTile({
-            id: next,
+            id: `${entry.gid}/${entry.token}`,
             title: createIconText({ text: (0, eHentaiParser_1.parseTitle)(entry.title) }),
             image: entry.thumb
         }));
     }
-    if (next == '')
-        results.push(createMangaTile({
-            id: 'stopSearch',
-            title: createIconText({ text: '' }),
-            image: ''
-        }));
+    results.push(createMangaTile({
+        id: next,
+        title: createIconText({ text: '' }),
+        image: ''
+    }));
     return results;
 }
 exports.getSearchData = getSearchData;
@@ -824,9 +821,6 @@ const parseTags = (tags) => {
 };
 exports.parseTags = parseTags;
 const parseTitle = (title) => {
-    if (title == '') {
-        return '';
-    }
     return title.replaceAll(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec));
 };
 exports.parseTitle = parseTitle;
