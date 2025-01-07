@@ -48,7 +48,7 @@ export async function getSearchData(query: string | undefined, page: string, cat
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : []
     const results = []
 
-    const next = $('a', '#unext').attr('href') ?? ''
+    const next = $('a', '#unext').attr('href') ?? 'jef'
 
     throw new Error(next)
 
