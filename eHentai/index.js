@@ -819,6 +819,9 @@ const parseTags = (tags) => {
 };
 exports.parseTags = parseTags;
 const parseTitle = (title) => {
+    if (title == '') {
+        return '';
+    }
     return title.replaceAll(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec));
 };
 exports.parseTitle = parseTitle;
