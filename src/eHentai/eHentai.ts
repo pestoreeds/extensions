@@ -170,15 +170,20 @@ export class eHentai extends Source {
 
     async getChapters(mangaId: string): Promise<Chapter[]> {
         const data = (await getGalleryData([mangaId], this.requestManager))[0]
+        const chapters = []
 
-        return [createChapter({
-            id: data.filecount,
+        for (let i = 0; i <= data.filecount; i++){
+            chapters.push(createChapter({
+            id: i,
             mangaId: mangaId,
-            chapNum: 1,
+            chapNum: i+1,
             langCode: parseLanguage(data.tags),
             name: parseTitle(data.title),
             time: new Date(parseInt(data.posted) * 1000)
-        })]
+            }))
+        }
+
+        return chapters
     }
 
     async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {
@@ -186,7 +191,7 @@ export class eHentai extends Source {
             id: chapterId,
             mangaId: mangaId,
             longStrip: false, // Change to true if other:webtoon?
-            pages: await parsePages(mangaId, parseInt(chapterId), this.requestManager, this.cheerio)
+            pages: await parsePage(mangaId, parseInt(chapterId), this.requestManager, this.cheerio)
         })
     }
 
