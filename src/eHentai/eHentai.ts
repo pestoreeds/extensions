@@ -172,9 +172,9 @@ export class eHentai extends Source {
         const data = (await getGalleryData([mangaId], this.requestManager))[0]
         const chapters = []
 
-        for (let i = 0; i <= data.filecount; i++){
+        for (let i = 0; i <= parseInt(data.filecount) / 20; i++){
             chapters.push(createChapter({
-            id: i,
+            id: i.toString(),
             mangaId: mangaId,
             chapNum: i+1,
             langCode: parseLanguage(data.tags),
@@ -183,7 +183,7 @@ export class eHentai extends Source {
             }))
         }
 
-        return chapters
+        return Promise.all(chapters)
     }
 
     async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {
