@@ -124,5 +124,8 @@ export const parseTags = (tags: string[]): TagSection[] => {
 }
 
 export const parseTitle = (title: string): string => {
+    if title == '' {
+        return ''
+    }
     return title.replaceAll(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec))
 }
