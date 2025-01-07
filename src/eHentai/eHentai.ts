@@ -126,6 +126,7 @@ export class eHentai extends Source {
         const next = results[results.length - 1].id ?? ''
         if (next == '') {
             stopSearch = true
+            throw new Error(`viewmore ${stopSearch}`)
         }
         results.pop()
 
@@ -219,7 +220,7 @@ export class eHentai extends Source {
         const next = results[results.length - 1].id ?? ''
         if (next == '') {
             stopSearch = true
-            throw new Error('next empty')
+            throw new Error(`getSearch ${stopSearch}`)
         }
 
         results.pop()
