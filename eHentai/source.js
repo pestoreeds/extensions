@@ -583,7 +583,6 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     if (query != undefined && query.length != 0 && query.split(' ').filter(q => !q.startsWith('-')).length != 0 && await stateManager.retrieve('extraSearchArgs'))
         query += ` ${await stateManager.retrieve('extraSearchArgs')}`;
     const url = (page == '') ? (`https://e-hentai.org/?f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`) : page;
-    throw new Error(url);
     const request = createRequestObject({
         url: url,
         method: 'GET'
@@ -598,7 +597,8 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     }
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : [];
     const results = [];
-    const next = $('#unext').attr('href') ?? '';
+    const next = $('#unext').attr('href');
+    throw new Error(`${next} ${url}`);
     for (const entry of json) {
         results.push(createMangaTile({
             id: `${entry.gid}/${entry.token}`,
