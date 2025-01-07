@@ -610,7 +610,7 @@ exports.getSearchData = getSearchData;
 },{"./eHentaiParser":50}],50:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseTitle = exports.parseTags = exports.parsePages = exports.parseLanguage = exports.parseArtist = void 0;
+exports.parseTitle = exports.parseTags = exports.parsePage = exports.parseLanguage = exports.parseArtist = void 0;
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const parseArtist = (tags) => {
     const artist = tags.filter(tag => tag.startsWith('artist:')).map(tag => tag.substring(7));
@@ -754,14 +754,18 @@ async function parsePage(id, page, requestManager, cheerio) {
     }
     return Promise.all(pageArr);
 }
-async function parsePages(id, pageCount, requestManager, cheerio) {
-    const pageArr = [];
+exports.parsePage = parsePage;
+/*
+async function parsePages(id: string, pageCount: number, requestManager: RequestManager, cheerio: CheerioAPI): Promise<string[]> {
+    const pageArr = []
+
     for (let i = 0; i <= pageCount / 20; i++) {
-        pageArr.push(parsePage(id, i, requestManager, cheerio));
+        pageArr.push(parsePage(id, i, requestManager, cheerio))
     }
-    return Promise.all(pageArr).then(pages => pages.reduce((prev, cur) => [...prev, ...cur], []));
+
+    return Promise.all(pageArr).then(pages => pages.reduce((prev, cur) => [...prev, ...cur], []))
 }
-exports.parsePages = parsePages;
+*/
 const namespaceHasTags = (namespace, tags) => { return tags.filter(tag => tag.startsWith(`${namespace}:`)).length != 0; };
 const createTagSectionForNamespace = (namespace, tags) => { return createTagSection({ id: namespace, label: namespace, tags: tags.filter(tag => tag.startsWith(`${namespace}:`)).map(tag => createTag({ id: tag, label: tag.substring(namespace.length + 1) })) }); };
 const parseTags = (tags) => {
