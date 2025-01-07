@@ -219,7 +219,7 @@ export class eHentai extends Source {
 
         const next = results[results.length - 1].id ?? ''
         if (next == '') {
-            throw new Error(`searchresults ${page}`)
+            throw new Error(`searchresults ${results.length}`)
             stopSearch = true
         }
     
