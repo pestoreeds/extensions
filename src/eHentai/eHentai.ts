@@ -125,8 +125,8 @@ export class eHentai extends Source {
         const results = await getSearchData('', page, 1023 - parseInt(homepageSectionId.substring(9)), this.requestManager, this.cheerio, this.stateManager)
         const next = results[results.length - 1].id ?? ''
         if (next == '') {
-            stopSearch = true
             throw new Error(`viewmore ${stopSearch}`)
+            stopSearch = true
         }
         results.pop()
 
@@ -219,8 +219,10 @@ export class eHentai extends Source {
 
         const next = results[results.length - 1].id ?? ''
         if (next == '') {
+            throw new Error(`searchresults ${page}`)
             stopSearch = true
         }
+    
 
         results.pop()
 
