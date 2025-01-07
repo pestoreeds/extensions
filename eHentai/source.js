@@ -542,7 +542,6 @@ class eHentai extends paperback_extensions_common_1.Source {
         const next = results[results.length - 1].id ?? '';
         if (next == '') {
             stopSearch = true;
-            throw new Error(`getSearch ${stopSearch}`);
         }
         results.pop();
         return createPagedResults({
