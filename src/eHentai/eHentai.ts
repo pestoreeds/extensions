@@ -25,7 +25,7 @@ import {
 import {
     parseArtist,
     parseLanguage,
-    parsePages,
+    parsePage,
     parseTags,
     parseTitle
 } from './eHentaiParser'
@@ -105,7 +105,7 @@ export class eHentai extends Source {
                 view_more: true,
             })
             sectionCallback(section)
-            getSearchData('', 0, 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(manga => {
+            getSearchData('', '', 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(manga => {
                 section.items = manga
                 sectionCallback(section)
             })
@@ -113,7 +113,7 @@ export class eHentai extends Source {
     }
 
     override async getViewMoreItems(homepageSectionId: string, metadata: any): Promise<PagedResults> {
-        const page = metadata?.page ?? 0
+        const page = metadata?.page ?? ''
         let stopSearch = metadata?.stopSearch ?? false
         if(stopSearch) return createPagedResults({
             results: [],
@@ -131,7 +131,7 @@ export class eHentai extends Source {
         return createPagedResults({
             results: results,
             metadata: {
-                page: page + 1,
+                page: page,
 		stopSearch: stopSearch
             }
         })
@@ -196,7 +196,7 @@ export class eHentai extends Source {
     }
 
     async getSearchResults(query: SearchRequest, metadata: any): Promise<PagedResults> {
-        const page = metadata?.page ?? 0
+        const page = metadata?.page ?? ''
         let stopSearch = metadata?.stopSearch ?? false
         if(stopSearch) return createPagedResults({
             results: [],
@@ -220,7 +220,7 @@ export class eHentai extends Source {
         return createPagedResults({
             results: results,
             metadata: {
-                page: page + 1,
+                page: page,
                 stopSearch: stopSearch
             }
         })

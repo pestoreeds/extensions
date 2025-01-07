@@ -25,10 +25,13 @@ export async function getGalleryData(ids: string[], requestManager: RequestManag
     return json.gmetadata
 }
 
-export async function getSearchData(query: string | undefined, page: number, categories: number, requestManager: RequestManager, cheerio: CheerioAPI, stateManager: SourceStateManager): Promise<MangaTile[]> {
-    if (query != undefined && query.length != 0 && query.split(' ').filter(q => !q.startsWith('-')).length != 0 && await stateManager.retrieve('extraSearchArgs')) query += ` ${await stateManager.retrieve('extraSearchArgs')}`
+export async function getSearchData(query: string | undefined, page: string, categories: number, requestManager: RequestManager, cheerio: CheerioAPI, stateManager: SourceStateManager): Promise<MangaTile[]> {
+   
+    if (query != undefined && query.length != 0 && query.split(' ').filter(q => !q.startsWith('-')).length != 0 && await stateManager.retrieve('extraSearchArgs')) 
+        query += ` ${await stateManager.retrieve('extraSearchArgs')}`
+    
     const request = createRequestObject({
-        url: `https://e-hentai.org/?page=${page}&f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`,
+        url: (page ==  '') ? (`https://e-hentai.org/?f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`) : page,
         method: 'GET'
     })
 
@@ -45,15 +48,17 @@ export async function getSearchData(query: string | undefined, page: number, cat
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : []
     const results = []
 
+    const next = $('a', '#unext').attr('href') ?? ''
+
     for (const entry of json) {
         results.push(createMangaTile({
-            id: `${entry.gid}/${entry.token}`,
+            id: next,
             title: createIconText({ text: parseTitle(entry.title) }),
             image: entry.thumb
         }))
     }
 
-    if ($('div.ptt').last().hasClass('ptdd')) results.push(createMangaTile({
+    if (next == '') results.push(createMangaTile({
         id: 'stopSearch',
         title: createIconText({ text: '' }),
         image: ''
