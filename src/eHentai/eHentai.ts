@@ -217,7 +217,7 @@ export class eHentai extends Source {
 
         const results = await getSearchData(query.title, page, categories, this.requestManager, this.cheerio, this.stateManager)
 
-        const next = results[results.length - 1].id ?? ''
+        const next = results[results.length - 1].id 
         if (next == '') {
             throw new Error(`searchresults ${results.length}`)
             stopSearch = true
