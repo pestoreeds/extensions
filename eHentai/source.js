@@ -539,6 +539,7 @@ class eHentai extends paperback_extensions_common_1.Source {
         else if (excludedCategories != undefined && excludedCategories.length != 0)
             categories = excludedCategories.map(tag => parseInt(tag.id.substring(9))).reduce((prev, cur) => prev + cur, 0);
         const results = await (0, eHentaiHelper_1.getSearchData)(query.title, page, categories, this.requestManager, this.cheerio, this.stateManager);
+        throw new Error(results);
         const next = results[results.length - 1].id;
         if (next == '') {
             throw new Error(`searchresults ${results.length}`);
@@ -610,7 +611,6 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
         title: createIconText({ text: '' }),
         image: ''
     }));
-    throw new Error(`${results.length} ${typeof (results[0])}`);
     return results;
 }
 exports.getSearchData = getSearchData;
