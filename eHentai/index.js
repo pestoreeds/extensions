@@ -541,7 +541,7 @@ class eHentai extends paperback_extensions_common_1.Source {
         const results = await (0, eHentaiHelper_1.getSearchData)(query.title, page, categories, this.requestManager, this.cheerio, this.stateManager);
         const next = results[results.length - 1].id ?? '';
         if (next == '') {
-            throw new Error(`searchresults ${page}`);
+            throw new Error(`searchresults ${results.length}`);
             stopSearch = true;
         }
         results.pop();
