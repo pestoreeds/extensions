@@ -437,7 +437,7 @@ class eHentai extends paperback_extensions_common_1.Source {
                 view_more: true,
             });
             sectionCallback(section);
-            (0, eHentaiHelper_1.getSearchData)('', '', 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(manga => {
+            (0, eHentaiHelper_1.getSearchData)('', '', 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(l => l[0]).then(manga => {
                 section.items = manga;
                 sectionCallback(section);
             });
@@ -454,14 +454,13 @@ class eHentai extends paperback_extensions_common_1.Source {
                 }
             });
         const results = await (0, eHentaiHelper_1.getSearchData)('', page, 1023 - parseInt(homepageSectionId.substring(9)), this.requestManager, this.cheerio, this.stateManager);
-        const next = results[results.length - 1].id ?? '';
+        const next = results[1];
         if (next == '') {
             throw new Error(`viewmore ${stopSearch}`);
             stopSearch = true;
         }
-        results.pop();
         return createPagedResults({
-            results: results,
+            results: results[0],
             metadata: {
                 page: next,
                 stopSearch: stopSearch
@@ -539,15 +538,13 @@ class eHentai extends paperback_extensions_common_1.Source {
         else if (excludedCategories != undefined && excludedCategories.length != 0)
             categories = excludedCategories.map(tag => parseInt(tag.id.substring(9))).reduce((prev, cur) => prev + cur, 0);
         const results = await (0, eHentaiHelper_1.getSearchData)(query.title, page, categories, this.requestManager, this.cheerio, this.stateManager);
-        throw new Error(results.map(x => x.id));
-        const next = results[results.length - 1].id;
+        const next = results[1];
         if (next == '') {
             throw new Error(`searchresults ${results.length}`);
             stopSearch = true;
         }
-        results.pop();
         return createPagedResults({
-            results: results,
+            results: results[0],
             metadata: {
                 page: next,
                 stopSearch: stopSearch
@@ -606,12 +603,14 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
             image: entry.thumb
         }));
     }
+    /*
     results.push(createMangaTile({
         id: next,
         title: createIconText({ text: '' }),
         image: ''
-    }));
-    return results;
+    }))
+   */
+    return [results, next];
 }
 exports.getSearchData = getSearchData;
 
