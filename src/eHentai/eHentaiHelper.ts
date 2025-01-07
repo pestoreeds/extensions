@@ -52,7 +52,7 @@ export async function getSearchData(query: string | undefined, page: string, cat
 
     for (const entry of json) {
         results.push(createMangaTile({
-            id: ,
+            id: `${entry.gid}/${entry.token}`,
             title: createIconText({ text: parseTitle(entry.title) }),
             image: entry.thumb
         }))
