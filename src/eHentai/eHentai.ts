@@ -153,6 +153,8 @@ export class eHentai extends Source {
     async getMangaDetails(mangaId: string): Promise<Manga> {
         const data = (await getGalleryData([mangaId], this.requestManager))[0]
 
+        if (typeof(data.title) == 'undefined') throw new Error(mangaId)
+
         return createManga({
             id: mangaId,
             titles: [parseTitle(data.title), parseTitle(data.title_jpn)],
