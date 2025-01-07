@@ -437,14 +437,14 @@ class eHentai extends paperback_extensions_common_1.Source {
                 view_more: true,
             });
             sectionCallback(section);
-            (0, eHentaiHelper_1.getSearchData)('', 0, 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(manga => {
+            (0, eHentaiHelper_1.getSearchData)('', '', 1023 - parseInt(tag.id.substring(9)), this.requestManager, this.cheerio, this.stateManager).then(manga => {
                 section.items = manga;
                 sectionCallback(section);
             });
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        const page = metadata?.page ?? 0;
+        const page = metadata?.page ?? '';
         let stopSearch = metadata?.stopSearch ?? false;
         if (stopSearch)
             return createPagedResults({
@@ -461,7 +461,7 @@ class eHentai extends paperback_extensions_common_1.Source {
         return createPagedResults({
             results: results,
             metadata: {
-                page: page + 1,
+                page: page,
                 stopSearch: stopSearch
             }
         });
@@ -514,11 +514,11 @@ class eHentai extends paperback_extensions_common_1.Source {
             id: chapterId,
             mangaId: mangaId,
             longStrip: false,
-            pages: await parsePage(mangaId, parseInt(chapterId), this.requestManager, this.cheerio)
+            pages: await (0, eHentaiParser_1.parsePage)(mangaId, parseInt(chapterId), this.requestManager, this.cheerio)
         });
     }
     async getSearchResults(query, metadata) {
-        const page = metadata?.page ?? 0;
+        const page = metadata?.page ?? '';
         let stopSearch = metadata?.stopSearch ?? false;
         if (stopSearch)
             return createPagedResults({
@@ -542,7 +542,7 @@ class eHentai extends paperback_extensions_common_1.Source {
         return createPagedResults({
             results: results,
             metadata: {
-                page: page + 1,
+                page: page,
                 stopSearch: stopSearch
             }
         });
@@ -577,7 +577,7 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     if (query != undefined && query.length != 0 && query.split(' ').filter(q => !q.startsWith('-')).length != 0 && await stateManager.retrieve('extraSearchArgs'))
         query += ` ${await stateManager.retrieve('extraSearchArgs')}`;
     const request = createRequestObject({
-        url: `https://e-hentai.org/?page=${page}&f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`,
+        url: (page == '') ? (`https://e-hentai.org/?f_cats=${categories}&f_search=${encodeURIComponent(query ?? '')}`) : page,
         method: 'GET'
     });
     const data = await requestManager.schedule(request, 1);
@@ -590,14 +590,15 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
     }
     const json = mangaIds.length != 0 ? await getGalleryData(mangaIds, requestManager) : [];
     const results = [];
+    const next = $('a', '#unext').attr('href') ?? '';
     for (const entry of json) {
         results.push(createMangaTile({
-            id: `${entry.gid}/${entry.token}`,
+            id: next,
             title: createIconText({ text: (0, eHentaiParser_1.parseTitle)(entry.title) }),
             image: entry.thumb
         }));
     }
-    if ($('div.ptt').last().hasClass('ptdd'))
+    if (next == '')
         results.push(createMangaTile({
             id: 'stopSearch',
             title: createIconText({ text: '' }),
