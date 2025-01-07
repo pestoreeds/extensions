@@ -64,7 +64,6 @@ export async function getSearchData(query: string | undefined, page: string, cat
         title: createIconText({ text: '' }),
         image: ''
     }))
-    throw new Error(`${results.length} ${typeof(results[0])}`)
 
     return results
 }
