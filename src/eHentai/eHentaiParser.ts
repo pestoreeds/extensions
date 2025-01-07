@@ -62,7 +62,7 @@ async function getImage(url: string, requestManager: RequestManager, cheerio: Ch
     return $('#img').attr('src') ?? ''
 }
 
-async function parsePage(id: string, page: number, requestManager: RequestManager, cheerio: CheerioAPI): Promise<string[]> {
+export async function parsePage(id: string, page: number, requestManager: RequestManager, cheerio: CheerioAPI): Promise<string[]> {
     const request = createRequestObject({
         url: `https://e-hentai.org/g/${id}/?p=${page}`,
         method: 'GET'
@@ -81,7 +81,8 @@ async function parsePage(id: string, page: number, requestManager: RequestManage
     return Promise.all(pageArr)
 }
 
-export async function parsePages(id: string, pageCount: number, requestManager: RequestManager, cheerio: CheerioAPI): Promise<string[]> {
+/*
+async function parsePages(id: string, pageCount: number, requestManager: RequestManager, cheerio: CheerioAPI): Promise<string[]> {
     const pageArr = []
 
     for (let i = 0; i <= pageCount / 20; i++) {
@@ -90,6 +91,7 @@ export async function parsePages(id: string, pageCount: number, requestManager: 
 
     return Promise.all(pageArr).then(pages => pages.reduce((prev, cur) => [...prev, ...cur], []))
 }
+*/
 
 const namespaceHasTags = (namespace: string, tags: string[]): boolean => { return tags.filter(tag => tag.startsWith(`${namespace}:`)).length != 0 }
 
