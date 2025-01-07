@@ -219,6 +219,7 @@ export class eHentai extends Source {
         const next = results[results.length - 1].id ?? ''
         if (next == '') {
             stopSearch = true
+            throw new Error('next empty')
         }
 
         results.pop()
