@@ -610,7 +610,7 @@ async function getSearchData(query, page, categories, requestManager, cheerio, s
         title: createIconText({ text: '' }),
         image: ''
     }));
-    throw new Error(`${results.length} ${results[0].id}`);
+    throw new Error(`${results.length} ${typeof (results[0])}`);
     return results;
 }
 exports.getSearchData = getSearchData;
