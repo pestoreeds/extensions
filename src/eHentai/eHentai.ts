@@ -123,15 +123,16 @@ export class eHentai extends Source {
         })
 
         const results = await getSearchData('', page, 1023 - parseInt(homepageSectionId.substring(9)), this.requestManager, this.cheerio, this.stateManager)
-        if (results[results.length - 1]?.id == 'stopSearch') {
-            results.pop()
+        const next = results[results.length - 1].id ?? ''
+        if (next == '') {
             stopSearch = true
         }
+        results.pop()
 
         return createPagedResults({
             results: results,
             metadata: {
-                page: page,
+                page: next,
 		stopSearch: stopSearch
             }
         })
