@@ -65,5 +65,5 @@ export async function getSearchData(query: string | undefined, page: string, cat
         image: ''
     }))
 
-    return Promise.all(results)
+    return results
 }
